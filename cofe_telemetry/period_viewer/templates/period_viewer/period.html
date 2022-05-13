@@ -5,8 +5,16 @@
     <title>Title</title>
 </head>
 <body>
-{% for per in periods %}
-    {{per}}
+Периоды отсутствия
+<br>
+{% for t in absent_time%}
+C {{t.0}} до {{t.1}} пропущенно: {{t.2}} мин. {{t.3}} с.<br>
 {% endfor %}
+Время работы
+{% if all_time_h %}
+{{all_time_h}}
+{% endif %} ч. {{all_time_m}} мин. {{all_time_s}} c. <br>
+Всего времени пропущенно {{sum_absent_min}} мин. {{sum_absent_sec}} с.
+
 </body>
 </html>

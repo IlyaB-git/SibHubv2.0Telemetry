@@ -2,9 +2,9 @@ from django.db import models
 
 class Shift(models.Model):
     id = models.TextField(primary_key=True)
-    filmingTime = models.JSONField()
-    videos = models.JSONField()
-    motion = models.JSONField()
+    filmingTime = models.JextField()
+    videos = models.JextField()
+    motion = models.JextField()
     createdAt = models.DateTimeField()
     updatedAt = models.DateTimeField()
 
@@ -23,8 +23,8 @@ class Telemetry(models.Model):
     id = models.TextField(primary_key=True)
     time = models.IntegerField()
     detectionProbability = models.FloatField()
-    detectionCoordinates = models.JSONField()
-    commentary = models.JSONField()
+    detectionCoordinates = models.JextField()
+    commentary = models.JextField()
     isSent = models.IntegerField()
     videoName = models.TextField()
     createdAt = models.DateTimeField()
