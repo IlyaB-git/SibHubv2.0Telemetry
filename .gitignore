@@ -1,7 +1,7 @@
-db-controller.sqlite3
 media/
 *.log
 *.pot
 *.pyc
 __pycache__
-./.idea
+/.idea/
+/venv/
