@@ -1,5 +1,5 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -14,6 +14,7 @@
 <div class="select_form">
 <form method="get">
     <t>Заведение:</t>
+
 <select name="shop">
 {% for s in shops %}
     <option value="{{s.id}}">{{s.name}}</option>
@@ -32,6 +33,7 @@
     <t>Время окончания:</t> <input type="time" value="23:59" name="time_stop"> <br>
 {% endif %}
     <input type="submit" value="Далее" class="button">
-</form></div>
+</form>
+</div>
 </body>
 </html>

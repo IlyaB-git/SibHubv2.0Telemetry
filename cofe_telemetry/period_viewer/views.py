@@ -71,9 +71,9 @@ def period(request, from_time, to_time, id_cofe):
                 delta_w = stop_w - start_w
                 work_time.append([datetime.fromtimestamp(start_w).strftime("%m.%d.%Y, %H:%M:%S"),
                                   datetime.fromtimestamp(stop_w).strftime("%H:%M:%S"),
-                                  int(delta_w / 60), delta_w % 60, True])
+                                  int(delta_w / 60), delta_w % 60, True, -start_w +stop_w])
                 work_time.append([prev.strftime("%m.%d.%Y, %H:%M:%S"), now.strftime("%H:%M:%S"),
-                                    int(delta/60), delta % 60, False])
+                                    int(delta/60), delta % 60, False, -prev_telem + telem.time])
                 start_w = telem.time
                 sum_absent += delta
                 sum_work += delta_w
@@ -86,8 +86,10 @@ def period(request, from_time, to_time, id_cofe):
                                   int(delta_w / 60), delta_w % 60, True])
             video = '/media/' + shift.videos[0]['video']
 
+        raspred = [[i[-2],round((int(i[-1]))/int(all_time)*560,2)] for i in work_time]
         context = {
             'periods': pers,
+            'all_time':raspred,
             'all_time_h': all_time // 3600,
             'all_time_m': all_time % 3600 // 60,
             'all_time_s': all_time % 60,
