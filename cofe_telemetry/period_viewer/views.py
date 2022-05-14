@@ -24,7 +24,11 @@ def select_per(request):
             date = get.get('date')
             time_start = get.get('time_start')
             time_stop = get.get('time_stop')
-            if True or shift and date and time_stop and time_start:
+            try:
+                check = str(Shift.objects.get(pk=shift).shop_id) == get.get('shop')
+            except:
+                check = False
+            if shift and date and time_stop and time_start and check:
                 try:
                     time_start = datetime.strptime(date + ' ' + time_start, "%Y-%m-%d %H:%M").timestamp()
                     time_stop = datetime.strptime(date + ' ' + time_stop, "%Y-%m-%d %H:%M").timestamp()
@@ -35,7 +39,8 @@ def select_per(request):
 
         context = {
             'shops': shops,
-            'sessions': sessions
+            'sessions': sessions,
+            'full_form': bool(len(shops))
         }
         return render(request, 'period_viewer/select.html', context)
     return redirect(reverse_lazy('login'))
@@ -135,8 +140,12 @@ def gen(camera):
 
 
 def loader_db(request):
+    error = ''
     if request.POST:
-        myfile = request.FILES['myfile']
+        try:
+            myfile = request.FILES['myfile']
+        except:
+            return render(request, 'period_viewer/load.html', {'error': 'Ошибка загрузки'})
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
@@ -170,5 +179,5 @@ def loader_db(request):
                     new_db.close()
                 if (db):
                     db.close()
-    return render(request, 'period_viewer/load.html')
+    return render(request, 'period_viewer/load.html', {'error': error})
 

@@ -1,14 +1,21 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Загрузка файлов</title>
+    <link rel="stylesheet" href="{% static 'period_viewer/style.css' %}">
 </head>
-<body>
+<body align="center">
+<a href="{% url 'select_per' %}"><button class="back button">Назад</button></a>
+<a href="{% url 'logout' %}"><button class="logout">Выйти</button></a>
+<div class="select_form">
 <form method="post"  enctype="multipart/form-data">
     {% csrf_token %}
-  <input name="myfile" type="file">
-    <input type="submit">
-</form>
+    <h4>На этой странице вы можете загрузить видео и базу данных в формате .sqlite</h4>
+    <h4>{{error}}</h4>
+  <input name="myfile" type="file" class="file"><br>
+    <input type="submit" value="Отправить" class="button">
+</form></div>
 </body>
 </html>

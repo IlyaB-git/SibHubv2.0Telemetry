@@ -1,30 +1,37 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Выбор</title>
+    <link rel="stylesheet" href="{% static 'period_viewer/style.css' %}">
 </head>
-<body>
+<body align="center">
 
+<a href="{% url 'load' %}"><button class="load_button">Загрузить данные</button></a>
+<a href="{% url 'logout' %}"><button class="logout">Выйти</button></a>
+
+<div class="select_form">
 <form method="get">
-
-    Заведение:
+    <t>Заведение:</t>
 <select name="shop">
 {% for s in shops %}
     <option value="{{s.id}}">{{s.name}}</option>
 {% endfor %}
-</select> <br>
-    Запись:
-<select name="shift">
-{% for s in sessions %}
-    <option value="{{s.1}}">{{s.0}}</option>
-{% endfor %}
-</select> <br>
+{% if sessions %}
+    </select> <br>
+        <t>Запись:</t>
+    <select name="shift">
+    {% for s in sessions %}
+        <option value="{{s.1}}">{{s.0}}</option>
+    {% endfor %}
+    </select> <br>
 
-Дата: <input type="date" value=2022-04-12" name="date"> <br>
-Время начала: <input type="time" value="00:00" name="time_start"> <br>
-Время окончания: <input type="time" value="23:59" name="time_stop"> <br>
-    <input type="submit" value="Далее">
-</form>
+    <t>Дата:</t> <input type="date" value="2022-04-12" name="date"> <br>
+    <t>Время начала:</t> <input type="time" value="00:00" name="time_start"> <br>
+    <t>Время окончания:</t> <input type="time" value="23:59" name="time_stop"> <br>
+{% endif %}
+    <input type="submit" value="Далее" class="button">
+</form></div>
 </body>
 </html>

@@ -1,14 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Вход</title>
+    <link rel="stylesheet" href="{% static 'period_viewer/style.css' %}">
 </head>
-<body>
+<body align="center" style="background: url({% static 'period_viewer/font.png' %})
+        center no-repeat fixed; background-size: 100%;  width: 100%
+        margin: 0;">
+<div class="select_form">
 <form method="post">
     {% csrf_token %}
-{{form.as_p}}
-    <input type="submit" value="Войти">
+    <table class="login_form">
+        <tr>
+            <td><h4>Логин</h4></td>
+            <td>{{form.username}}</td>
+        </tr>
+        <tr>
+            <td><h4>Пароль</h4></td>
+            <td>{{form.password}}</td>
+        </tr>
+    </table>
+
+
+    <input type="submit" value="Войти" class="button">
 </form>
+</div>
 </body>
 </html>
