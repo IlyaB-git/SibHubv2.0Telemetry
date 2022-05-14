@@ -1,5 +1,13 @@
 from django.db import models
 
+
+class Shop(models.Model):
+    name = models.CharField(max_length=64)
+    address = models.TextField()
+
+    class Meta:
+        db_table = 'shop'
+
 class Shift(models.Model):
     id = models.TextField(primary_key=True)
     filmingTime = models.JSONField()
@@ -7,6 +15,7 @@ class Shift(models.Model):
     motion = models.JSONField()
     createdAt = models.DateTimeField()
     updatedAt = models.DateTimeField()
+    shop = models.ForeignKey(Shop, on_delete=models.CASCADE, null=True)
 
     class Meta:
         db_table = 'shift'
@@ -33,5 +42,4 @@ class Telemetry(models.Model):
 
     class Meta:
         db_table = 'telemetry'
-
 

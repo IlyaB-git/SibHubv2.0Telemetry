@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form method="get">
+
+    Заведение:
+<select name="shop">
+{% for s in shops %}
+    <option value="{{s.id}}">{{s.name}}</option>
+{% endfor %}
+</select> <br>
+    Запись:
+<select name="shift">
+{% for s in sessions %}
+    <option value="{{s.1}}">{{s.0}}</option>
+{% endfor %}
+</select> <br>
+
+Дата: <input type="date" value=2022-04-12" name="date"> <br>
+Время начала: <input type="time" value="00:00" name="time_start"> <br>
+Время окончания: <input type="time" value="23:59" name="time_stop"> <br>
+    <input type="submit" value="Далее">
+</form>
+</body>
+</html>

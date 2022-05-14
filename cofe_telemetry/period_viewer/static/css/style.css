@@ -1,0 +1,43 @@
+.square {
+    position: absolute;
+    top: 20px;
+    left: 650px;
+}
+.rectangle{
+position: absolute;
+top: 15px;
+left: 645px;
+display: inline-block;
+
+border:1px solid;
+
+margin:auto;
+
+background: #25537b;
+}
+
+
+.prog_bar {
+    display: inline-block;
+    margin: 0;
+}
+
+.progress_bar{
+    padding: 0px 16px 20px;
+}
+
+.li {
+  list-style: none;
+  display: inline-block;
+  padding: 5px 10px;
+  text-transform: uppercase;
+  background-color: transparent;
+  color: gray;
+  transition: all 0.5s;
+  font-size:19px
+}
+
+.li:hover {
+  background-color: #ffbb82;
+  color: #ffffff;
+}
