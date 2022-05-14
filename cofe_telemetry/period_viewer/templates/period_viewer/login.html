@@ -5,6 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-<div id="app" class="app d-flex flex-column page-login" style="overflow-x: hidden;"><!----> <div class="container-login d-flex align-items-center page-content flex-grow-1"><div class="card card-login align-items-stretch"><div class="card-login-logo text-center pt-4"><img src="/static/app/img/vendoscope-logo.b5d46f6.png"></div> <form class="card-body"><h2 class="card-login-title">Вход</h2> <div class="form-group"><label for="input-login-email">E-mail адрес</label> <input id="input-login-email" type="email" placeholder="E-mail" name="email" class="form-control form-control-lg"></div> <div class="form-actions"><button type="submit" class="btn btn-primary btn-lg btn-block">Продолжить</button></div> <!----> <div class="small mt-3 text-center"><a href="/register" class="">Регистрация</a></div></form> <!----> <!----> <!----></div></div> <div><div class="app-backdrop" style="display: none;"></div> <div class="modal app-modal"></div></div></div><script>window.env = {"RELEASE":"2.148.58","APP_ENV":"production"}</script><script type="text/javascript" src="/static/app/js/manifest.9ae7a65ce158eb44c7af.js"></script><script type="text/javascript" src="/static/app/js/vendor.d01654a2631d12fbc424.js"></script><script type="text/javascript" src="/static/app/js/app.27d8fd0c1603bf2e6789.js"></script>
+<form method="post">
+    {% csrf_token %}
+{{form.as_p}}
+    <input type="submit" value="Войти">
+</form>
 </body>
 </html>

@@ -5,16 +5,28 @@
     <title>Title</title>
 </head>
 <body>
+<a href="{% url 'select_per' %}">Назад к выбору</a> <br>
 Периоды отсутствия
 <br>
-{% for t in absent_time%}
+{% for t in work_time%}
+{% if t.4 %}
+C {{t.0}} до {{t.1}} работа: {{t.2}} мин. {{t.3}} с.<br>
+{% else %}
 C {{t.0}} до {{t.1}} пропущенно: {{t.2}} мин. {{t.3}} с.<br>
+{% endif %}
 {% endfor %}
 Время работы
 {% if all_time_h %}
-{{all_time_h}}
-{% endif %} ч. {{all_time_m}} мин. {{all_time_s}} c. <br>
-Всего времени пропущенно {{sum_absent_min}} мин. {{sum_absent_sec}} с.
+{{all_time_h}} ч.
+{% endif %} {{all_time_m}} мин. {{all_time_s}} c. <br>
+Всего времени пропущенно {{sum_absent_min}} мин. {{sum_absent_sec}} с. <br>
+
+
+{% if video %}
+<video>
+ <source src="{{video}}">
+</video>
+{% endif %}
 
 </body>
 </html>
