@@ -1,4 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
+from django.http import StreamingHttpResponse
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse_lazy
@@ -7,6 +8,8 @@ import sqlite3
 from .forms import LoginForm
 from .models import *
 from datetime import datetime
+from .services import open_file
+
 # from .cv_drawer import *
 
 
@@ -60,8 +63,10 @@ def period(request, from_time, to_time, id_cofe):
 
 
         absent = False
-        work_time, sum_absent, sum_work = [], 0, 0
+        work_time, sum_absent, sum_work, customersl = [], 0, 0, []
         start_w = prev_telem
+        cust_in = prev_telem
+        prev_cust = prev_telem
         for telem in Telemetry.objects.filter(time__gte=from_time, time__lte=to_time).order_by('time'):
             if telem.time - prev_telem > 60:
                 prev = datetime.fromtimestamp(prev_telem)
@@ -78,15 +83,21 @@ def period(request, from_time, to_time, id_cofe):
                 sum_absent += delta
                 sum_work += delta_w
             prev_telem = telem.time
+            x = (telem.detectionCoordinates['x1'] + telem.detectionCoordinates['x2']) / 2
+            y = (telem.detectionCoordinates['y1'] + telem.detectionCoordinates['y2']) / 2
+            if  x - 20 * 127 - 28 * y:
+                if telem.time - prev_cust > 15:
+                    cust_out = prev_cust
+                    customersl.append([telem.time - prev_cust, False])
+                    customersl.append([prev_cust - cust_in, True])
+                    cust_in = telem.time
+            prev_cust = telem.time
         video = None
         if prev_telem:
-            if telem.time - start_w > 60:
-                work_time.append([datetime.fromtimestamp(start_w).strftime("%m.%d.%Y, %H:%M:%S"),
-                                  datetime.fromtimestamp(telem.time).strftime("%H:%M:%S"),
-                                  int(delta_w / 60), delta_w % 60, True])
-            video = '/media/' + shift.videos[0]['video']
+            video = '/video/' + shift.videos[0]['video']
 
-        raspred = [[i[-2],round((int(i[-1]))/int(all_time)*560,2)] for i in work_time]
+        raspred = [[i[-2],round((int(i[-1]))/int(all_time)*560, 2)] for i in work_time]
+        customers = [[round(c[0]*560/all_time, 5), c[1]] for c in customersl]
         context = {
             'periods': pers,
             'all_time':raspred,
@@ -97,7 +108,8 @@ def period(request, from_time, to_time, id_cofe):
             'sum_absent': sum_absent,
             'sum_absent_sec': sum_absent % 60,
             'sum_absent_min': sum_absent // 60,
-            'video': video
+            'video': video,
+            'customers': customers
         }
         return render(request, 'period_viewer/period.html', context)
     return redirect(reverse_lazy('login'))
@@ -183,3 +195,16 @@ def loader_db(request):
                     db.close()
     return render(request, 'period_viewer/load.html', {'error': error})
 
+
+
+
+
+def get_streaming_video(request, video_pk: str):
+    file, status_code, content_length, content_range = open_file(request, video_pk)
+    response = StreamingHttpResponse(file, status=status_code, content_type='video/mp4')
+
+    response['Accept-Ranges'] = 'bytes'
+    response['Content-Length'] = str(content_length)
+    response['Cache-Control'] = 'no-cache'
+    response['Content-Range'] = content_range
+    return response
