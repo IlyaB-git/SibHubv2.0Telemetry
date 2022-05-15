@@ -8,9 +8,10 @@
 </head>
 <body align="center">
 
-
-<a href="{% url 'load' %}"><button class="load_button">Загрузить данные</button></a>
-<a href="{% url 'logout' %}"><button class="logout">Выйти</button></a>
+<div class="menu">
+    <a href="{% url 'load' %}"><button class="small_button">Загрузить данные</button></a>
+    <a href="{% url 'logout' %}"><button class="small_button logout">Выйти</button></a>
+</div>
 
 <div class="select_form">
 <form method="get">

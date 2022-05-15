@@ -10,8 +10,15 @@
 <body>
 
 <a href="{% url 'select_per' %}"><button class="back button">Назад</button></a>
-<a href="{% url 'logout' %}"><button class="logout">Выйти</button></a>
+
+
+<div class="menu">
+    <a href="{% url 'logout' %}"><button class="small_button">Выйти</button></a>
+</div>
+
+<main>
 <div class = "li">
+    <h5 style="text-align: center;">Статистика</h5>
 Периоды отсутствия
 <br>
 {% for t in work_time %}
@@ -26,12 +33,15 @@ C {{t.0}} до {{t.1}} пропущенно: {{t.2}} мин. {{t.3}} с.<br>
 
 
 <br>
-Время работы
+Общее время
 {% if all_time_h %}
 {{all_time_h}} ч.
 {% endif %} {{all_time_m}} мин. {{all_time_s}} c.
 <br>
-Всего времени пропущенно {{sum_absent_min}} мин. {{sum_absent_sec}} с. <br>
+    Время работы
+{% if sum_work_h %}{{sum_work_h}} ч.
+{% endif %} {{sum_work_min}} мин. {{sum_work_sec}} c.<br>
+Времени пропущенно {{sum_absent_min}} мин. {{sum_absent_sec}} с. <br>
 <br>
     Потенциальных покупателей {{num_custs}}<br>
 </div>
@@ -60,7 +70,7 @@ C {{t.0}} до {{t.1}} пропущенно: {{t.2}} мин. {{t.3}} с.<br>
     {% if t.1 %}
     <div class = "prog_bar" style="width: {{t.0}}%; height: 10px; background: #ddd;"></div>
     {% else %}
-    <div class = "prog_bar" style="width: 0.2%; height: 10px; background: #29d900;"></div>
+    <div class = "prog_bar" style="width: 1%; height: 10px; background: #29d900;"></div>
     {% endif %}
 {% endfor %}
         </div>
@@ -69,6 +79,6 @@ C {{t.0}} до {{t.1}} пропущенно: {{t.2}} мин. {{t.3}} с.<br>
         <t style="background: #f00;">Работник отсутсвует</t>
         <t style="background: #29d900;">Потенциальные покупатели</t>
         <t style="background: #ddd;">Отсутсвие посетителей</t>
-    </div></div>
+    </div></div></main>
 </body>
 </html>

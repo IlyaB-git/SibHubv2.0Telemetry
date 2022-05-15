@@ -6,9 +6,11 @@
     <title>Загрузка файлов</title>
     <link rel="stylesheet" href="{% static 'period_viewer/style.css' %}">
 </head>
-<body align="center">
+<body>
 <a href="{% url 'select_per' %}"><button class="back button">Назад</button></a>
-<a href="{% url 'logout' %}"><button class="logout">Выйти</button></a>
+<div class="menu">
+    <a href="{% url 'logout' %}"><button class="small_button">Выйти</button></a>
+</div>
 <div class="select_form">
 <form method="post"  enctype="multipart/form-data">
     {% csrf_token %}

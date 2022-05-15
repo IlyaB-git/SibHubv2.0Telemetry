@@ -79,12 +79,11 @@ def period(request, from_time, to_time, id_cofe):
 
         video = None
         if prev_telem:
-            customersl.append([telem.time - prev_cust, False])
-            customersl.append([prev_cust - cust_in, True])
-            prev_telem, cust_in, start_w, sum_absent, sum_work, work_time, customersl = \
-                detect(telem, prev_telem, cust_in, start_w, sum_absent, sum_work, work_time, customersl, True)
-            customersl.append([telem.time - prev_telem, False])
-            customersl.append([prev_telem - cust_in, True])
+            detect(telem, prev_telem, cust_in, start_w, sum_absent, sum_work, work_time, customersl, True)
+            if telem.time - prev_telem > 3:
+                customersl.append([telem.time - prev_telem, False])
+            if prev_telem - cust_in > 3:
+                customersl.append([prev_telem - cust_in, True])
 
             video = '/video/' + shift.videos[0]['video']
 
@@ -105,6 +104,9 @@ def period(request, from_time, to_time, id_cofe):
             'sum_absent': sum_absent,
             'sum_absent_sec': sum_absent % 60,
             'sum_absent_min': sum_absent // 60,
+            'sum_work_h': sum_work // 3600,
+            'sum_work_sec': sum_work % 60,
+            'sum_work_min': sum_work // 60,
             'video': video,
             'customers': customers,
             'num_custs': num_custs
