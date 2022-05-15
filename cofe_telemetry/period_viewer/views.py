@@ -86,7 +86,7 @@ def period(request, from_time, to_time, id_cofe):
             x = (telem.detectionCoordinates['x1'] + telem.detectionCoordinates['x2']) / 2
             y = (telem.detectionCoordinates['y1'] + telem.detectionCoordinates['y2']) / 2
             if  x - 20 * 127 - 28 * y:
-                if telem.time - prev_cust > 15:
+                if telem.time - prev_cust > 30:
                     cust_out = prev_cust
                     customersl.append([telem.time - prev_cust, False])
                     customersl.append([prev_cust - cust_in, True])
@@ -96,8 +96,8 @@ def period(request, from_time, to_time, id_cofe):
         if prev_telem:
             video = '/video/' + shift.videos[0]['video']
 
-        raspred = [[i[-2],round((int(i[-1]))/int(all_time)*560, 2)] for i in work_time]
-        customers = [[round(c[0]*560/all_time, 5), c[1]] for c in customersl]
+        raspred = [[i[-2],str(round((int(i[-1]))/int(all_time)*100, 2))] for i in work_time]
+        customers = [[str(round(c[0]*100/all_time, 2)), c[1]] for c in customersl]
         context = {
             'periods': pers,
             'all_time':raspred,

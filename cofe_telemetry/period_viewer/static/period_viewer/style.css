@@ -51,6 +51,13 @@
 .login_form{
     margin: auto;
 }
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%)
+}
 .back {
     position: fixed;
     top: 20px;
@@ -69,6 +76,10 @@
     font-size: 16px;
     cursor: pointer;
 }
+.video {
+    width: 100%;
+    min-width: 560px;
+}
 
 .file {
     background-color: DodgerBlue;
@@ -86,14 +97,17 @@
 
 .timeline {
     font-size: 0;
-    margin: 5px;
+    margin: 5px 0;
+    justify-content: space-between;
+    display: flex;
 }
 
 
 .square {
-    position: absolute;
-    top: 20px;
-    left: 650px;
+    display: inline-block;
+    width: calc(100% - 620px);
+    margin: 50px 20px 10px 10px;
+    min-width: 560px;
 }
 .rectangle{
 position: absolute;
@@ -105,7 +119,6 @@ border:1px solid;
 
 margin:auto;
 
-background: #25537b;
 }
 
 
@@ -124,9 +137,10 @@ background: #25537b;
   padding: 5px 10px;
   text-transform: uppercase;
   background-color: transparent;
-  color: gray;
   transition: all 0.5s;
-  font-size:19px
+  font-size:19px;
+  margin-top: 100px;
+    vertical-align: top;
 }
 
 .li:hover {

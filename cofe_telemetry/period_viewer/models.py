@@ -7,6 +7,8 @@ class Shop(models.Model):
 
     class Meta:
         db_table = 'shop'
+        verbose_name='Заведение'
+        verbose_name_plural='Заведения'
 
 class Shift(models.Model):
     id = models.TextField(primary_key=True)
@@ -19,6 +21,8 @@ class Shift(models.Model):
 
     class Meta:
         db_table = 'shift'
+        verbose_name='Запись'
+        verbose_name_plural='Записи'
 '''
 class SqliteSequence(models.Model):
     name = models.TextField()
@@ -42,4 +46,6 @@ class Telemetry(models.Model):
 
     class Meta:
         db_table = 'telemetry'
+        verbose_name='Телеметрия'
+        verbose_name_plural='Телеметрия'
 

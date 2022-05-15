@@ -9,8 +9,9 @@
 </head>
 <body>
 
+<a href="{% url 'select_per' %}"><button class="back button">Назад</button></a>
+<a href="{% url 'logout' %}"><button class="logout">Выйти</button></a>
 <div class = "li">
-<a href="{% url 'select_per' %}">Назад к выбору</a> <br>
 Периоды отсутствия
 <br>
 {% for t in work_time %}
@@ -34,11 +35,11 @@ C {{t.0}} до {{t.1}} пропущенно: {{t.2}} мин. {{t.3}} с.<br>
 <br>
 </div>
 
-<div class="rectangle" style="width: 570px; height: 325px; border:1px solid; margin:auto;"></div>
+<!--<div class="rectangle" style="width: 570px; height: 325px; border:1px solid; margin:auto;"></div>-->
 
 {% if video %}
 <div class="square">
-    <video width="560" height="315" controls preload="auto">
+    <video controls preload="auto" class="video">
         <source src="{{video}}">
     </video>
     <div class = "progress_bar">
@@ -46,9 +47,9 @@ C {{t.0}} до {{t.1}} пропущенно: {{t.2}} мин. {{t.3}} с.<br>
         <div class="timeline">
 {% for t in all_time%}
     {% if t.0 %}
-    <div class = "prog_bar" style="width: {{t.1}}px; height: 10px; background: #5bd0ff;"></div>
+    <div class = "prog_bar" style="width: {{t.1}}%; height: 10px; background: #5bd0ff;"></div>
     {% else %}
-    <div class = "prog_bar" style="width: {{t.1}}px; height: 10px; background: #F00;"></div>
+    <div class = "prog_bar" style="width: {{t.1}}%; height: 10px; background: #F00;"></div>
     {% endif %}
 {% endfor %}
             <br></div>
@@ -56,14 +57,17 @@ C {{t.0}} до {{t.1}} пропущенно: {{t.2}} мин. {{t.3}} с.<br>
         <div class="timeline">
 {% for t in customers%}
     {% if t.1 %}
-    <div class = "prog_bar" style="width: {{t.0}}px; height: 10px; background: #ddd;"></div>
+    <div class = "prog_bar" style="width: {{t.0}}%; height: 10px; background: #ddd;"></div>
     {% else %}
-    <div class = "prog_bar" style="width: {{t.0}}px; height: 10px; background: #29d900;"></div>
+    <div class = "prog_bar" style="width: {{t.0}}%; height: 10px; background: #29d900;"></div>
     {% endif %}
 {% endfor %}
         </div>
-
 {% endif %}
-    </div></div></div>
+        <t style="background: #5bd0ff;">Работник на месте</t>
+        <t style="background: #f00;">Работник отсутсвует</t>
+        <t style="background: #29d900;">Потенциальные покупатели</t>
+        <t style="background: #ddd;">Отсутсвие посетителей</t>
+    </div></div>
 </body>
 </html>
