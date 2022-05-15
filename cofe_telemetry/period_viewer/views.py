@@ -9,13 +9,17 @@ from .forms import LoginForm
 from .models import *
 from datetime import datetime
 from .services import open_file
-
+from .detection import detect
 # from .cv_drawer import *
 
 
 def select_per(request):
     if request.user.is_authenticated:
-        shops = Shop.objects.all()
+        shops_i, _ = Premisions.objects.get_or_create(user_id=request.user.id)
+        shops = []
+        if shops_i.shops:
+            for id in shops_i.shops:
+                shops += Shop.objects.filter(id=id)
         sessions = []
         for sh in Shift.objects.filter(shop_id=request.GET.get('shop')):
             start = datetime.fromtimestamp(int(sh.filmingTime[0]['start']))
@@ -68,36 +72,29 @@ def period(request, from_time, to_time, id_cofe):
         cust_in = prev_telem
         prev_cust = prev_telem
         for telem in Telemetry.objects.filter(time__gte=from_time, time__lte=to_time).order_by('time'):
-            if telem.time - prev_telem > 60:
-                prev = datetime.fromtimestamp(prev_telem)
-                now = datetime.fromtimestamp(telem.time)
-                stop_w = prev_telem
-                delta = telem.time - prev_telem
-                delta_w = stop_w - start_w
-                work_time.append([datetime.fromtimestamp(start_w).strftime("%m.%d.%Y, %H:%M:%S"),
-                                  datetime.fromtimestamp(stop_w).strftime("%H:%M:%S"),
-                                  int(delta_w / 60), delta_w % 60, True, -start_w +stop_w])
-                work_time.append([prev.strftime("%m.%d.%Y, %H:%M:%S"), now.strftime("%H:%M:%S"),
-                                    int(delta/60), delta % 60, False, -prev_telem + telem.time])
-                start_w = telem.time
-                sum_absent += delta
-                sum_work += delta_w
-            prev_telem = telem.time
-            x = (telem.detectionCoordinates['x1'] + telem.detectionCoordinates['x2']) / 2
-            y = (telem.detectionCoordinates['y1'] + telem.detectionCoordinates['y2']) / 2
-            if  x - 20 * 127 - 28 * y:
-                if telem.time - prev_cust > 30:
-                    cust_out = prev_cust
-                    customersl.append([telem.time - prev_cust, False])
-                    customersl.append([prev_cust - cust_in, True])
-                    cust_in = telem.time
-            prev_cust = telem.time
+            prev_telem, cust_in, start_w, sum_absent, sum_work, work_time, customersl =\
+                detect(telem, prev_telem, cust_in, start_w, sum_absent, sum_work, work_time, customersl)
+
+
+
         video = None
         if prev_telem:
+            customersl.append([telem.time - prev_cust, False])
+            customersl.append([prev_cust - cust_in, True])
+            prev_telem, cust_in, start_w, sum_absent, sum_work, work_time, customersl = \
+                detect(telem, prev_telem, cust_in, start_w, sum_absent, sum_work, work_time, customersl, True)
+            customersl.append([telem.time - prev_telem, False])
+            customersl.append([prev_telem - cust_in, True])
+
             video = '/video/' + shift.videos[0]['video']
 
         raspred = [[i[-2],str(round((int(i[-1]))/int(all_time)*100, 2))] for i in work_time]
         customers = [[str(round(c[0]*100/all_time, 2)), c[1]] for c in customersl]
+        num_custs = 0
+        for i in customers:
+            if i[1] == 0:
+                num_custs += 1
+
         context = {
             'periods': pers,
             'all_time':raspred,
@@ -109,7 +106,8 @@ def period(request, from_time, to_time, id_cofe):
             'sum_absent_sec': sum_absent % 60,
             'sum_absent_min': sum_absent // 60,
             'video': video,
-            'customers': customers
+            'customers': customers,
+            'num_custs': num_custs
         }
         return render(request, 'period_viewer/period.html', context)
     return redirect(reverse_lazy('login'))

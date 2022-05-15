@@ -33,6 +33,7 @@ C {{t.0}} до {{t.1}} пропущенно: {{t.2}} мин. {{t.3}} с.<br>
 <br>
 Всего времени пропущенно {{sum_absent_min}} мин. {{sum_absent_sec}} с. <br>
 <br>
+    Потенциальных покупателей {{num_custs}}<br>
 </div>
 
 <!--<div class="rectangle" style="width: 570px; height: 325px; border:1px solid; margin:auto;"></div>-->
@@ -59,7 +60,7 @@ C {{t.0}} до {{t.1}} пропущенно: {{t.2}} мин. {{t.3}} с.<br>
     {% if t.1 %}
     <div class = "prog_bar" style="width: {{t.0}}%; height: 10px; background: #ddd;"></div>
     {% else %}
-    <div class = "prog_bar" style="width: {{t.0}}%; height: 10px; background: #29d900;"></div>
+    <div class = "prog_bar" style="width: 0.2%; height: 10px; background: #29d900;"></div>
     {% endif %}
 {% endfor %}
         </div>

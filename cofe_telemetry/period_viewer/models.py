@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 
 class Shop(models.Model):
@@ -49,3 +50,14 @@ class Telemetry(models.Model):
         verbose_name='Телеметрия'
         verbose_name_plural='Телеметрия'
 
+class Premisions(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE, verbose_name='Пользователь'
+    )
+    shops = models.JSONField(verbose_name='Кофейни')
+
+    class Meta:
+        db_table = 'premisions'
+        verbose_name = 'Права'
+        verbose_name_plural = 'Права'
